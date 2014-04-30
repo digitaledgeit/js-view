@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>View example</title>
+</head>
+<body>
+
+    <div class="js-view">
+        <input type="text" class="js-input" autofocus/>
+        <button class="js-button">Search!</button>
+    </div>
+
+    <script src="../build/build.js"></script>
+    <script>
+
+        /**
+         * A simple search form
+         *  - provides a getter and setter for accessing the search query
+         *  - emits a `submit` event for the controller/presenter to make use of
+         */
+        var SearchFormView = require('view').create({
+
+            events: {
+                'keypress .js-input': 'onKeypress',
+                'click .js-button': 'emit:submit'
+            },
+
+            elements: {
+                '.js-input': 'input',
+                '.js-button': 'button'
+            },
+
+            /**
+             * Called on construction
+             */
+            init: function() {
+            },
+
+            /**
+             * Gets the query value
+             * @returns {string}
+             */
+            getQuery: function() {
+                return this.input.value;
+            },
+
+            /**
+             * Sets the query value
+             * @param   {string} query
+             * @returns {SearchFormView}
+             */
+            setQuery: function(query) {
+                this.input.value = query;
+                return this;
+            },
+
+            /**
+             * Focuses the user input
+             * @returns {SearchFormView}
+             */
+            focus: function() {
+                this.input.focus();
+                return this;
+            },
+
+            /**
+             * Selects the user input
+             * @returns {SearchFormView}
+             */
+            select: function() {
+                this.input.select();
+                return this;
+            },
+
+            /**
+             * Enables the form allowing user input
+             * @returns {SearchFormView}
+             */
+            enable: function() {
+                this.input.disabled = false;
+                this.button.disabled = false;
+                return this;
+            },
+
+            /**
+             * Disables the form preventing user input
+             * @returns {SearchFormView}
+             */
+            disable: function() {
+                this.input.disabled = true;
+                this.button.disabled = true;
+                return this;
+            },
+
+            /**
+             * Handles the
+             * @param   {KeyboardEvent} event
+             */
+            onKeypress: function(event) {
+                if (event.keyCode === 13) {
+                    this.emit('submit');
+                }
+            }
+
+        });
+
+        var view = new SearchFormView({
+            el: document.querySelector('.js-view')
+        });
+
+        view.on('submit', function() {
+            view.disable();
+            console.log('Searching for "'+view.getQuery()+'"...');
+            setTimeout(function() {
+                view.focus().select().enable();
+            }, 1500)
+        });
+
+    </script>
+</body>
+</html>
