@@ -10,101 +10,150 @@ var emitter = require('emitter');
  */
 function View(options) {
 
-  if (!options) {
-    return;
-  }
+	this._element   = this.element;
+	this._elements  = this.elements;
+	this._events    = this.events;
 
-  if (options.el) {
-    this.el = options.el;
-  } else {
-    throw new Error('View: No element provided.');
-  }
+	if(options) {
 
-  this.bindEvents();
-  this.cacheElements();
+		if(options.el) {
+			this._element = options.el;
+		}
 
-  if (this.init) {
-    this.init(options);
-  }
+		if(options.elements) {
+			this._elements = options.elements
+		}
+
+		if(options.events) {
+			this._events = options.events
+		}
+
+	}
+
+	this.createElement();
+	this.bindEvents();
+	this.cacheElements();
+
+	if(this.init) {
+		this.init(options);
+	}
 
 }
 emitter(View.prototype);
+
+/**
+ * The default element spec
+ * @type {object}
+ */
+View.prototype.element = {
+	tag: 'div'
+};
+
+/**
+ * Creates the element
+ * @api private
+ */
+View.prototype.createElement = function() {
+	var el;
+
+	var spec = this._element;
+
+	if(spec instanceof HTMLElement) {
+		el = spec
+	} else if(typeof spec === 'object') {
+
+		el = document.createElement(spec.tag);
+
+		if(spec.classes) {
+			el.className = spec.classes;
+		}
+
+		if(spec.content) {
+			el.innerHTML = spec.content;
+		}
+
+	}
+
+	this.el = el;
+};
 
 /**
  * Cache the specified elements on the view
  * @api private
  */
 View.prototype.cacheElements = function() {
-  for (selector in this.elements) {
+	if(this.el && this._elements) {
+		for(selector in this._elements) {
 
-    if (!this.elements.hasOwnProperty(selector)) {
-      continue;
-    }
+			if(!this._elements.hasOwnProperty(selector)) {
+				continue;
+			}
 
-    var prop = this.elements[selector];
+			var prop = this._elements[selector];
 
-    if (prop.substr(0, 4) === 'all:') {
-      this[prop.substr(4)] = this.el.querySelectorAll(selector);
-    } else {
-      this[prop] = this.el.querySelector(selector);
-    }
+			if(prop.substr(0, 4) === 'all:') {
+				this[prop.substr(4)] = this.el.querySelectorAll(selector);
+			} else {
+				this[prop] = this.el.querySelector(selector);
+			}
 
-  }
-
-}
+		}
+	}
+};
 
 /**
  * Bind the specified events to the view
  * @api private
  */
 View.prototype.bindEvents = function() {
+	if(this.el && this._events) {
+		for(dfn in this._events) {
 
-  for (dfn in this.events) {
+			if(!this._events.hasOwnProperty(dfn)) {
+				continue;
+			}
 
-    if (!this.events.hasOwnProperty(dfn)) {
-      continue;
-    }
+			//get the callback
+			var callback = this._events[dfn];
+			if(typeof callback === 'string') {
+				if(callback.substr(0, 5) === 'emit:') {
+					function createEmitCallback(event) {
+						return function(domEvent) {
+							this.emit(event, domEvent);
+						}
+					}
 
-    //get the callback
-    var callback  = this.events[dfn];
-    if (typeof callback === 'string') {
-      if (callback.substr(0, 5) === 'emit:') {
-        function createEmitCallback(event) {
-          return function(domEvent) {
-            this.emit(event, domEvent);
-          }
-        }
-        callback = createEmitCallback(callback.substr(5));
-      } else {
-        callback = this[callback];
-      }
-      if (typeof callback !== 'function') {
-        throw new Error('View: Event '+dfn+' callback cannot be resolved to a function');
-      }
-      callback = callback.bind(this);
-    }
+					callback = createEmitCallback(callback.substr(5));
+				} else {
+					callback = this[callback];
+				}
+				if(typeof callback !== 'function') {
+					throw new Error('View: Event ' + dfn + ' callback cannot be resolved to a function');
+				}
+				callback = callback.bind(this);
+			}
 
-    //get the event and selector
-    var s         = dfn.split(' ', 2);
-    var event     = s[0];
-    var selector  = s[1];
+			//get the event and selector
+			var s = dfn.split(' ', 2);
+			var event = s[0];
+			var selector = s[1];
 
-    //bind the event
-    if (s.length === 1) {
-      events.bind(this.el, event, callback);
-    } else {
-      delegates.bind(this.el, selector, event, callback);
-    }
+			//bind the event
+			if(s.length === 1) {
+				events.bind(this.el, event, callback);
+			} else {
+				delegates.bind(this.el, selector, event, callback);
+			}
 
-  }
-
+		}
+	}
 };
 
 /**
  * Unbinds the view from element events
  * @api private
  */
-View.prototype.unbindElementEvents = function() {
+View.prototype.unbindEvents = function() {
 
 };
 
@@ -114,19 +163,19 @@ View.prototype.unbindElementEvents = function() {
  */
 View.create = function(props) {
 
-  var ChildView = function() {
-    View.apply(this, arguments);
-  };
-  ChildView.prototype = new View();
-  ChildView.prototype.constructor = ChildView;
+	var ChildView = function() {
+		View.apply(this, arguments);
+	};
+	ChildView.prototype = new View();
+	ChildView.prototype.constructor = ChildView;
 
-  for (var i in props) {
-    if (props.hasOwnProperty(i)) {
-      ChildView.prototype[i] = props[i];
-    }
-  }
+	for(var i in props) {
+		if(props.hasOwnProperty(i)) {
+			ChildView.prototype[i] = props[i];
+		}
+	}
 
-  return ChildView;
+	return ChildView;
 };
 
 module.exports = View;

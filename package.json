@@ -5,5 +5,12 @@
     "component-event": "0.1.3",
     "component-delegate": "0.2.1",
     "component-emitter": "1.1.2"
+  },
+  "browser": {
+    "event": "component-event",
+    "delegate": "component-delegate",
+    "emitter": "component-emitter",
+    "closest": "discore-closest",
+    "matches-selector": "component-matches-selector"
   }
 }
