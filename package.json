@@ -3,11 +3,12 @@
   "version": "0.1.0",
   "dependencies": {
     "component-event": "0.1.3",
-    "component-delegate": "git://github.com/jameslnewell/delegate.git",
+    "component-delegate": "git+https://github.com/jameslnewell/delegate.git",
     "component-emitter": "1.1.2"
   },
   "browser": {
     "event": "component-event",
     "delegate": "component-delegate",
     "emitter": "component-emitter"
+  }
 }
