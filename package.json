@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "dependencies": {
     "component-event": "0.1.3",
-    "component-delegate": "git+https://github.com/jameslnewell/delegate.git",
+    "component-delegate": "0.2.1",
     "component-emitter": "1.1.2"
   },
   "browser": {
