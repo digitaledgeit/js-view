@@ -58,7 +58,7 @@ View.prototype.createElement = function() {
 
 	var spec = this._element;
 
-	if(spec instanceof HTMLElement) {
+	if(spec.nodeType) {
 		el = spec
 	} else if(typeof spec === 'object') {
 
