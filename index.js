@@ -119,7 +119,7 @@ View.prototype.bindEvents = function() {
 				if(callback.substr(0, 5) === 'emit:') {
 					function createEmitCallback(event) {
 						return function(domEvent) {
-							this.emit(event, domEvent);
+							this.emit(event);
 						}
 					}
 
