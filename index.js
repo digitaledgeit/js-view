@@ -140,9 +140,9 @@ View.prototype.bindEvents = function() {
 
 			//bind the event
 			if(s.length === 1) {
-				events.bind(this.el, event, callback);
+				events.bind(this.el, event, callback, true);
 			} else {
-				delegates.bind(this.el, selector, event, callback);
+				delegates.bind(this.el, selector, event, callback, true);
 			}
 
 		}
