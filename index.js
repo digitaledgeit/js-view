@@ -42,9 +42,14 @@ function View(options) {
 }
 emitter(View.prototype);
 
-View.extend = function(prototype) {
-  var child = extend(this, prototype);
-  child.extend = this.extend;
+/**
+ * Create a new view class which extends this view class and copy the properties to the child view's prototype
+ * @param   {Object}  [properties]
+ * @returns {View}
+ */
+View.extend = function(properties) {
+  var child     = extend(this, properties);
+  child.extend  = this.extend;
   return child;
 };
 

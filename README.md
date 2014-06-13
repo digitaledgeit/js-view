@@ -7,9 +7,9 @@ A [Backbone](http://backbonejs.org/#View) *like* view for vanilla JS.
   and formats it for display in the view.*
   [Model–view–presenter](http://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93presenter)
 
-## View.create(props) : View
+## View.extend(properties) : View
 
-Creates a new view class and copies the specified props to the view prototype.
+Creates a new child view class and copies the specified properties to the child view prototype.
 
 ## View.prototype.el : HTMLElement
 
