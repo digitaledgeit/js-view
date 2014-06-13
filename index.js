@@ -1,3 +1,4 @@
+var extend = require('extend');
 var events = require('event');
 var delegates = require('delegate');
 var emitter = require('emitter');
@@ -40,6 +41,12 @@ function View(options) {
 
 }
 emitter(View.prototype);
+
+View.extend = function(prototype) {
+  var child = extend(this, prototype);
+  child.extend = this.extend;
+  return child;
+};
 
 /**
  * The default element spec

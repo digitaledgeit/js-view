@@ -4,11 +4,13 @@
   "dependencies": {
     "component-event": "0.1.3",
     "component-delegate": "0.2.1",
-    "component-emitter": "1.1.2"
+    "component-emitter": "1.1.2",
+    "digitaledgeit-extend": "0.1.0"
   },
   "browser": {
     "event": "component-event",
     "delegate": "component-delegate",
-    "emitter": "component-emitter"
+    "emitter": "component-emitter",
+    "extend": "digitaledgeit-extend"
   }
 }
