@@ -64,12 +64,16 @@ View.prototype.createElement = function() {
 
 		el = document.createElement(spec.tag);
 
-		if(spec.classes) {
-			el.className = spec.classes;
-		}
-
 		if(spec.content) {
 			el.innerHTML = spec.content;
+		}
+
+		for (var key in spec) {
+			if (spec.hasOwnProperty(key)) {
+				if (key !== 'tag' && spec !== content) {
+					el.setAttribute(key, spec[key]);
+				}
+			}
 		}
 
 	}
