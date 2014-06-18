@@ -2,6 +2,12 @@
 <html>
 <head>
     <title>View example</title>
+	<style>
+		.title-1 {
+			font-size: 1.25em;
+			font-family: sans-serif;
+		}
+	</style>
 </head>
 <body>
 
@@ -13,12 +19,14 @@
     <script src="../build/build.js"></script>
     <script>
 
+	    var View = require('view');
+
         /**
          * A simple search form
          *  - provides a getter and setter for accessing the search query
          *  - emits a `submit` event for the controller/presenter to make use of
          */
-        var SearchFormView = require('view').create({
+        var SearchFormView = View.extend({
 
             events: {
                 'keypress .js-input': 'onKeypress',
@@ -115,6 +123,16 @@
                 view.focus().select().enable();
             }, 1500)
         });
+
+	    var title = new View({
+		    el: {
+			    tag: 'h1',
+			    'class': 'title-1',
+			    'content': 'Test!'
+		    }
+	    });
+
+	    document.body.insertBefore(title.el, view.el);
 
     </script>
 </body>
