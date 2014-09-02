@@ -2,9 +2,9 @@
   "name": "view",
   "scripts": ["index.js"],
   "dependencies": {
-    "component/event": "0.1.3",
-    "component/delegate": "0.2.1",
-    "component/emitter": "1.1.2",
+    "component/event": "0.1.4",
+    "component/delegate": "0.2.3",
+    "component/emitter": "1.1.3",
     "digitaledgeit/js-extend": "0.1.0"
   }
 }
