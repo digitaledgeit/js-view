@@ -74,13 +74,17 @@ View.prototype.createElement = function () {
 
 		el = document.createElement(spec.tag);
 
-		if(spec.content) {
+		if (spec.content) {
 			el.innerHTML = spec.content;
+		}
+
+		if (spec.classes) {
+			el.className = spec.classes;
 		}
 
 		for (var key in spec) {
 			if (spec.hasOwnProperty(key)) {
-				if (key !== 'tag' && spec !== 'content') {
+				if (key !== 'tag' && key !== 'content' && key !== 'classes') {
 					el.setAttribute(key, spec[key]);
 				}
 			}
