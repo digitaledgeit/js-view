@@ -1,4 +1,4 @@
-var extend = require('extend');
+var extend = require('extend-class');
 var events = require('event');
 var delegates = require('delegate');
 var emitter = require('emitter');
