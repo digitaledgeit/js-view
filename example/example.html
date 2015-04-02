@@ -11,9 +11,9 @@
 </head>
 <body>
 
-    <div class="js-view">
-        <input type="text" class="js-input" autofocus/>
-        <button class="js-button">Search!</button>
+    <div class="js-search-form">
+        <input type="text" class="js-query" autofocus/>
+        <button class="js-submit">Search!</button>
     </div>
 
     <script src="../build/build.js"></script>
@@ -26,30 +26,31 @@
          *  - provides a getter and setter for accessing the search query
          *  - emits a `submit` event for the controller/presenter to make use of
          */
+
         var SearchFormView = View.extend({
 
             events: {
-                'keypress .js-input': 'onKeypress',
-                'click .js-button': 'emit:submit'
+                'keypress .js-query':   'onKeypress',
+                'click .js-submit':     'emit:submit'
             },
 
             elements: {
-                '.js-input': 'input',
-                '.js-button': 'button'
+                '.js-query':    'query',
+                '.js-submit':   'submit'
             },
 
             /**
-             * Called on construction
+             * Initialise method
              */
-            init: function() {
+            init: function(options) {
             },
 
             /**
-             * Gets the query value
+             * Get the query value
              * @returns {string}
              */
             getQuery: function() {
-                return this.input.value;
+                return this.query.value;
             },
 
             /**
@@ -58,50 +59,50 @@
              * @returns {SearchFormView}
              */
             setQuery: function(query) {
-                this.input.value = query;
+                this.query.value = query;
                 return this;
             },
 
             /**
-             * Focuses the user input
+             * Focus the query field
              * @returns {SearchFormView}
              */
             focus: function() {
-                this.input.focus();
+                this.query.focus();
                 return this;
             },
 
             /**
-             * Selects the user input
+             * Selects the query field
              * @returns {SearchFormView}
              */
             select: function() {
-                this.input.select();
+                this.query.select();
                 return this;
             },
 
             /**
-             * Enables the form allowing user input
+             * Enable the form allowing user input
              * @returns {SearchFormView}
              */
             enable: function() {
-                this.input.disabled = false;
-                this.button.disabled = false;
+                this.query.disabled = false;
+                this.submit.disabled = false;
                 return this;
             },
 
             /**
-             * Disables the form preventing user input
+             * Disables the form denying user input
              * @returns {SearchFormView}
              */
             disable: function() {
-                this.input.disabled = true;
-                this.button.disabled = true;
+                this.query.disabled = true;
+                this.submit.disabled = true;
                 return this;
             },
 
             /**
-             * Handles the
+             * Capture and emit the submit event
              * @param   {KeyboardEvent} event
              */
             onKeypress: function(event) {
@@ -113,7 +114,7 @@
         });
 
         var view = new SearchFormView({
-            el: document.querySelector('.js-view')
+            el: document.querySelector('.js-search-form')
         });
 
         view.on('submit', function() {

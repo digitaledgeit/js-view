@@ -170,6 +170,7 @@ View.prototype.bindEvents = function () {
 /**
  * Unbinds the view from element events
  * @api private
+ * TODO:
  */
 View.prototype.unbindEvents = function () {
 
