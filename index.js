@@ -1,34 +1,21 @@
 var extend = require('extend-class');
-var events = require('event');
-var delegates = require('delegate');
-var emitter = require('emitter');
+var events = require('component-event');
+var delegates = require('component-delegate');
+var emitter = require('component-emitter');
 
 /**
  * View
  * @constructor
  * @param   {Object}        options
  * @param   {HTMLElement}   options.el
+ * @param   {HTMLElement}   options.events
+ * @param   {HTMLElement}   options.elements
  */
 function View(options) {
-	this._element = this.element;
-	this._elements = this.elements;
-	this._events = this.events;
-
-	if (options) {
-
-		if (options.el) {
-			this._element = options.el;
-		}
-
-		if (options.elements) {
-			this._elements = options.elements
-		}
-
-		if (options.events) {
-			this._events = options.events
-		}
-
-	}
+	options         = options || {};
+	this._el        = options.el || this.el || this.element;
+	this._events    = options.events || this.events;
+	this._elements  = options.elements || this.elements;
 
 	this.createElement();
 	this.bindEvents();
@@ -54,25 +41,25 @@ View.extend = function(properties) {
 
 /**
  * The default element spec
- * @type {object}
+ * @type {Object}
  */
-View.prototype.element = {
+View.prototype.el = {
 	tag: 'div'
 };
 
 /**
- * Creates the element
- * @api private
+ * Create the element
+ * @private
  */
 View.prototype.createElement = function () {
 	var el;
-	var spec = this._element;
+	var spec = this._el;
 
-	if (spec.nodeType) {
+	if (spec.nodeName) {
 		el = spec
-	} else if (typeof spec === 'object') {
+	} else {
 
-		el = document.createElement(spec.tag);
+		el = document.createElement(spec.tag || 'div');
 
 		if (spec.content) {
 			el.innerHTML = spec.content;
@@ -97,7 +84,7 @@ View.prototype.createElement = function () {
 
 /**
  * Cache the specified elements on the view
- * @api private
+ * @private
  */
 View.prototype.cacheElements = function () {
 	if (this.el && this._elements) {
@@ -121,7 +108,7 @@ View.prototype.cacheElements = function () {
 
 /**
  * Bind the specified events to the view
- * @api private
+ * @private
  */
 View.prototype.bindEvents = function () {
 	if (this.el && this._events) {
@@ -169,7 +156,7 @@ View.prototype.bindEvents = function () {
 
 /**
  * Unbinds the view from element events
- * @api private
+ * @private
  * TODO:
  */
 View.prototype.unbindEvents = function () {

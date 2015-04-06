@@ -1,7 +1,7 @@
 {
   "name": "digitaledgeit-view",
   "description": "Abstract your DOM manipulation with a Backbone *like* view for vanilla JS",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "keywords": [
     "view",
     "browser",
